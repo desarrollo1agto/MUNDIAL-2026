@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> CALENDARIO COPA MUNDIAL 2026</title>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --gold: #D4AF37;
+            --gold-dim: #8b7322;
+            --text-color: #f5f5f5;
+            --line-thickness: 1px;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 5px; 
+            overflow-x: hidden;
+        }
+
+        h1 {
+            color: var(--gold);
+            background-color: #222; 
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: var(--line-thickness) solid var(--gold);
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px auto 10px auto;
+            max-width: 900px;
+            font-size: 1.2em;
+        }
+
+        #calendar-view { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        #detail-view { display: none; max-width: 600px; margin: 0 auto; }
+
+        .month-container { width: 100%; }
+        .month-title {
+            color: var(--gold);
+            font-size: 1em;
+            margin-bottom: 3px;
+            font-weight: 400;
+            text-align: center;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            border-top: var(--line-thickness) solid var(--gold);
+            border-left: var(--line-thickness) solid var(--gold);
+        }
+
+        .day-header {
+            text-align: center;
+            padding: 2px;
+            color: var(--gold);
+            border-right: var(--line-thickness) solid var(--gold);
+            border-bottom: var(--line-thickness) solid var(--gold);
+            font-weight: bold;
+            font-size: 0.7em;
+            text-transform: uppercase;
+            background-color: #111;
+        }
+
+        .day-cell {
+            min-height: 42px; 
+            padding: 2px;
+            border-right: var(--line-thickness) solid var(--gold);
+            border-bottom: var(--line-thickness) solid var(--gold);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .day-cell.SUDAFRICA { background-color: #c60; }    
+        .day-cell.KOREA { background-color: #c60; }    
+        .day-cell.TUNEZ { background-color: #c60; }     
+        .day-cell.DIECISEISAVOS { background-color: #c60; } 
+
+        .day-cell.empty { cursor: default; background-color: transparent; }
+
+        .date-num {
+            font-size: 0.85em;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .event-cat {
+            font-size: 0.65em;
+            font-weight: bold;
+            color: #fff;
+            background-color: rgba(0,0,0,0.5);
+            padding: 1px 3px;
+            border-radius: 2px;
+            position: absolute;
+            top: 2px;
+            right: 2px;
+        }
+
+        /* Nuevo estilo para acomodar el texto del horario sin romper el diseño */
+        .time-range {
+            font-size: 0.6em;
+            color: #ddd;
+            text-align: right;
+            line-height: 1;
+            margin-top: 2px;
+            margin-bottom: 2px;
+        }
+
+        .elements-num {
+            font-size: 0.8em;
+            font-weight: bold;
+            text-align: right;
+            color: #fff;
+            width: 100%;
+        }
+
+        .detail-card {
+            border: var(--line-thickness) solid var(--gold);
+            padding: 20px;
+            background-color: #111;
+        }
+        
+        .btn-back {
+            background-color: #000080; 
+            color: #fff; 
+            border: var(--line-thickness) solid var(--gold);
+            padding: 5px 15px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+        .btn-back:hover {
+            background-color: #000050; 
+        }
+    </style>
+</head>
+<body>
+
+    <div style="text-align: center;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Escudo_Fuerza_Civil_de_Nuevo_Le%C3%B3n.png" alt="Escudo Fuerza Civil" style="max-height: 50px;">
+    </div>
+    
+    <h1>CALENDARIO MUNDIAL FIFA 2026</h1>
+
+    <div id="calendar-view">
+        <div class="month-container">
+            <div class="month-title">JUNIO 2026</div>
+            <div class="calendar-grid" id="grid-june">
+                <div class="day-header">Lun</div>
+                <div class="day-header">Mar</div>
+                <div class="day-header">Mié</div>
+                <div class="day-header">Jue</div>
+                <div class="day-header">Vie</div>
+                <div class="day-header">Sáb</div>
+                <div class="day-header">Dom</div>
+            </div>
+        </div>
+
+        <div class="month-container">
+            <div class="month-title">JULIO 2026</div>
+            <div class="calendar-grid" id="grid-july">
+                <div class="day-header">Lun</div>
+                <div class="day-header">Mar</div>
+                <div class="day-header">Mié</div>
+                <div class="day-header">Jue</div>
+                <div class="day-header">Vie</div>
+                <div class="day-header">Sáb</div>
+                <div class="day-header">Dom</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="detail-view">
+        <button class="btn-back" onclick="showCalendar()">← REGRESAR</button>
+        <div class="detail-card">
+            <h2 id="detail-date-title" style="color: var(--gold); font-weight: 400; font-size: 1.1em; border-bottom: 1px solid var(--gold); padding-bottom: 5px;"></h2>
+            <p><b style="color: var(--gold-dim)">HORARIO:</b> <span id="detail-time"></span></p>
+            <p><b style="color: var(--gold-dim)">CATEGORÍA:</b> <span id="detail-cat"></span></p>
+            <p><b style="color: var(--gold-dim)">ESCENARIO:</b> <span id="detail-stage"></span></p>
+            <p><b style="color: var(--gold-dim)">EVENTO:</b> <span id="detail-event"></span></p>
+            <p><b style="color: var(--gold-dim)">ELEMENTOS:</b> <span id="detail-elements"></span></p>
+        </div>
+    </div>
+
+    <script>
+        const categoryData = {
+            "SUDAFR VS KOREA": { stage: "BBVA", elements: "875 elementos", num: "875" },
+            "SUECIA VS TUNEZ": { stage: "BBVA", elements: "875 elementos", num: "875" },
+            "TUNEZ VS JAPON": { stage: "BBVA", elements: "875 elementos", num: "875" },
+            "DIECISEISAVOS": { stage: "BBVA", elements: "875 elementos", num: "875" }
+        };
+
+        const eventData = {
+            "2026-06-14": { cat: "SUECIA VS TUNEZ", event: "SUECIA VS TUNEZ", artist: "", ap: "20:00", ci: "" },
+            "2026-06-20": { cat: "TUNEZ VS JAPON", event: "TUNEZ VS JAPON", artist: "", ap: "22:00", ci: "" },
+            "2026-06-24": { cat: "SUDAFR VS KOREA", event: "SUDAFRICA VS KOREA", artist: "", ap: "19:00", ci: "" },
+            "2026-06-29": { cat: "DIECISEISAVOS", event: "DIECISEISAVOS", artist: "", ap: "19:00", ci: "" },
+        };
+
+        function renderCalendar() {
+            const juneGrid = document.getElementById('grid-june');
+            const julyGrid = document.getElementById('grid-july');
+
+            // Junio (Lunes)
+            for (let i = 1; i <= 30; i++) {
+                let dateKey = `2026-06-${i.toString().padStart(2, '0')}`;
+                let data = eventData[dateKey];
+                let cell = document.createElement('div');
+                cell.className = data ? `day-cell ${data.cat}` : "day-cell";
+                if(data) cell.onclick = () => showDetail(dateKey);
+                
+                cell.innerHTML = `<span class="date-num">${i}</span>`;
+                if(data) {
+                    cell.innerHTML += `<span class="event-cat">${data.cat}</span>`;
+                    
+                    // Lógica para mostrar la hora en el cuadro
+                    let timeText = data.cat === 'LIBRE' ? 'Sin actividad' : `${data.ap} - ${data.ci}`;
+                    cell.innerHTML += `<span class="time-range">${timeText}</span>`;
+
+                    if(categoryData[data.cat].num !== "") {
+                        cell.innerHTML += `<span class="elements-num">👮‍♂️ ${categoryData[data.cat].num}</span>`;
+                    }
+                }
+                juneGrid.appendChild(cell);
+            }
+
+            // Julio (Miércoles -> 2 vacíos)
+            for(let j=0; j<2; j++) julyGrid.appendChild(Object.assign(document.createElement('div'), {className: "day-cell empty"}));
+            for (let i = 1; i <= 31; i++) {
+                let dateKey = `2026-07-${i.toString().padStart(2, '0')}`;
+                let data = eventData[dateKey];
+                let cell = document.createElement('div');
+                cell.className = data ? `day-cell ${data.cat}` : "day-cell";
+                if(data) cell.onclick = () => showDetail(dateKey);
+                
+                cell.innerHTML = `<span class="date-num">${i}</span>`;
+                if(data) {
+                    cell.innerHTML += `<span class="event-cat">${data.cat}</span>`;
+                    
+                    // Lógica para mostrar la hora en el cuadro
+                    let timeText = data.cat === 'LIBRE' ? 'Sin actividad' : `${data.ap} - ${data.ci}`;
+                    cell.innerHTML += `<span class="time-range">${timeText}</span>`;
+
+                    if(categoryData[data.cat].num !== "") {
+                        cell.innerHTML += `<span class="elements-num">👮‍♂️ ${categoryData[data.cat].num}</span>`;
+                    }
+                }
+                julyGrid.appendChild(cell);
+            }
+        }
+
+        function showDetail(dateKey) {
+            const data = eventData[dateKey];
+            const catInfo = categoryData[data.cat];
+            const dateObj = new Date(dateKey + "T12:00:00");
+            
+            document.getElementById('detail-date-title').innerText = dateObj.toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+            
+            // Detalle del horario
+            if (data.cat === 'LIBRE') {
+                document.getElementById('detail-time').innerText = "Sin actividad programada";
+            } else {
+                document.getElementById('detail-time').innerText = `Apertura ${data.ap} hrs / Cierre ${data.ci} hrs`;
+            }
+
+            document.getElementById('detail-cat').innerText = data.cat;
+            document.getElementById('detail-stage').innerText = catInfo.stage;
+            document.getElementById('detail-event').innerText = data.event
+            document.getElementById('detail-elements').innerText = catInfo.elements;
+            
+            document.getElementById('calendar-view').style.display = 'none';
+            document.getElementById('detail-view').style.display = 'block';
+        }
+
+        function showCalendar() {
+            document.getElementById('calendar-view').style.display = 'flex';
+            document.getElementById('detail-view').style.display = 'none';
+        }
+
+        window.onload = renderCalendar;
+    </script>
+</body>
+</html>
